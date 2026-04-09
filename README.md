@@ -1,5 +1,8 @@
 # 📅 Premium Wall Calendar 
 Live Link= https://calendar-project-sigma.vercel.app/
+---
+
+
 A sleek, interactive calendar component built with a focus on **UX, responsiveness, and clean frontend architecture**.
 
 ---
