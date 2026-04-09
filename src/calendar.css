@@ -1,0 +1,433 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{min-height:100vh}
+
+:root{
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+  --ease-out: cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ── Dark mode tokens ─────────────────────────────────────── */
+.dark-mode {
+  --bg-page:     #080B10;
+  --bg-card:     #0D1117;
+  --bg-panel:    rgba(255,255,255,0.03);
+  --bg-hover:    rgba(255,255,255,0.08);
+  --border:      rgba(255,255,255,0.07);
+  --border-str:  rgba(255,255,255,0.15);
+  --text:        rgba(255,255,255,0.92);
+  --text2:       rgba(255,255,255,0.48);
+  --text3:       rgba(255,255,255,0.24);
+  --shadow:      0 60px 120px rgba(0,0,0,0.9), 0 0 0 0.5px rgba(255,255,255,0.08);
+  --ring-bg:     #1A1F2C;
+  --ring-bd:     rgba(255,255,255,0.16);
+  --ring-sh:     rgba(255,255,255,0.09);
+  --nail-bg:     #2A2A32;
+  --nail-sh:     rgba(255,255,255,0.28);
+  --thread:      rgba(255,255,255,0.13);
+  --inp-bg:      rgba(255,255,255,0.04);
+  --inp-bd:      rgba(255,255,255,0.10);
+  --tog-bg:      rgba(255,255,255,0.08);
+  --saved-bg:    rgba(255,255,255,0.04);
+  --saved-hdr:   rgba(255,255,255,0.55);
+}
+
+/* ── Light mode tokens ────────────────────────────────────── */
+.light-mode {
+  --bg-page:     #EDEBE5;
+  --bg-card:     #FAFAF7;
+  --bg-panel:    rgba(0,0,0,0.03);
+  --bg-hover:    rgba(0,0,0,0.06);
+  --border:      rgba(0,0,0,0.08);
+  --border-str:  rgba(0,0,0,0.18);
+  --text:        rgba(0,0,0,0.88);
+  --text2:       rgba(0,0,0,0.50);
+  --text3:       rgba(0,0,0,0.30);
+  --shadow:      0 40px 100px rgba(0,0,0,0.16), 0 0 0 0.5px rgba(0,0,0,0.10);
+  --ring-bg:     #DDD9D1;
+  --ring-bd:     rgba(0,0,0,0.20);
+  --ring-sh:     rgba(255,255,255,0.88);
+  --nail-bg:     #B8B4AC;
+  --nail-sh:     rgba(255,255,255,0.80);
+  --thread:      rgba(0,0,0,0.14);
+  --inp-bg:      rgba(0,0,0,0.04);
+  --inp-bd:      rgba(0,0,0,0.12);
+  --tog-bg:      rgba(0,0,0,0.07);
+  --saved-bg:    rgba(0,0,0,0.04);
+  --saved-hdr:   rgba(0,0,0,0.55);
+}
+
+/* ── Scene / page ─────────────────────────────────────────── */
+.scene {
+  min-height: 100vh;
+  background: var(--bg-page);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding: 56px 20px 48px;
+  transition: background 0.55s var(--ease-out);
+  position: relative; overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+}
+.scene::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23888' fill-opacity='0.035'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.scene-ambient {
+  position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  filter: blur(130px); opacity: 0.10; pointer-events: none;
+  transition: background 0.7s ease;
+}
+.ambient-1 { top: -120px; left: -120px; }
+.ambient-2 { bottom: -120px; right: -120px; }
+
+/* ── Top bar ──────────────────────────────────────────────── */
+.top-bar {
+  width: 100%; max-width: 820px;
+  display: flex; justify-content: flex-end; align-items: center;
+  margin-bottom: 22px; gap: 10px;
+}
+
+/* ✅ FIX 3: mode toggle readable in both modes */
+.mode-toggle {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 40px;
+  background: var(--tog-bg);
+  border: 1px solid var(--border-str);
+  cursor: pointer;
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.05em;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text2);
+  transition: all 0.28s var(--ease-out);
+}
+.mode-toggle:hover { background: var(--bg-hover); color: var(--text); transform: scale(1.03); }
+.toggle-icon { font-size: 13px; transition: transform 0.45s var(--ease-spring); display: inline-block; }
+.mode-toggle:hover .toggle-icon { transform: rotate(22deg); }
+
+.month-counter {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 13px; border-radius: 40px;
+  background: var(--tog-bg); border: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text3); letter-spacing: 0.07em;
+}
+
+/* ── Wall hanging hardware ────────────────────────────────── */
+.nail {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--nail-sh), var(--nail-bg) 60%);
+  border: 0.5px solid var(--border-str);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  position: relative; z-index: 10;
+  transition: background 0.5s ease, border-color 0.5s ease;
+}
+.nail::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%); width: 7px; height: 7px;
+  border-radius: 50%; background: var(--nail-bg);
+  border: 0.5px solid rgba(0,0,0,0.3);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+.wall-string {
+  width: 3px; height: 30px;
+  background: linear-gradient(to bottom, var(--nail-bg), var(--thread));
+  margin: 0 auto; border-radius: 2px;
+  transition: background 0.5s ease;
+}
+
+/* ── Card ─────────────────────────────────────────────────── */
+.calendar-outer { width: 100%; max-width: 820px; position: relative; }
+.calendar-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: background 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+  position: relative;
+}
+
+/* ── Rings bar ────────────────────────────────────────────── */
+.rings-bar {
+  height: 28px;
+  display: flex; align-items: center; justify-content: center; gap: 20px;
+  border-bottom: 0.5px solid var(--border);
+  position: relative; z-index: 5;
+  transition: background 0.5s ease;
+}
+.dark-mode  .rings-bar { background: linear-gradient(to bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.18)); }
+.light-mode .rings-bar { background: linear-gradient(to bottom,rgba(0,0,0,0.07),rgba(0,0,0,0.03)); }
+
+.ring {
+  width: 21px; height: 21px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--ring-sh) 0%, var(--ring-bg) 62%);
+  border: 1.5px solid var(--ring-bd);
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.2);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.5s ease;
+}
+.ring-hole {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--bg-page);
+  border: 0.5px solid rgba(0,0,0,0.25);
+  transition: background 0.5s ease;
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero { position: relative; height: 260px; overflow: hidden; }
+.hero-img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s var(--ease-out), transform 0.8s var(--ease-out); }
+.hero-img.loading { opacity: 0; transform: scale(1.05); }
+.hero-img.loaded  { opacity: 1; transform: scale(1); }
+.hero-gradient  { position: absolute; inset: 0; transition: background 0.5s ease; }
+.hero-accent-bar{ position: absolute; bottom: 0; left: 0; height: 3px; width: 100%; transition: background 0.5s ease; }
+
+.hero-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 18px 28px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.month-display { line-height: 1; }
+.month-num  { font-family: 'JetBrains Mono',monospace; font-size: 11px; letter-spacing: 0.24em; color: rgba(255,255,255,0.48); margin-bottom: 4px; }
+.month-name { font-family: 'Cormorant Garamond',serif; font-size: clamp(2.1rem,5vw,3.1rem); font-weight: 700; color: #fff; letter-spacing: -0.02em; text-shadow: 0 2px 20px rgba(0,0,0,0.5); line-height: 1; }
+.month-year { font-family: 'JetBrains Mono',monospace; font-size: 11px; color: rgba(255,255,255,0.38); margin-top: 6px; letter-spacing: 0.2em; }
+
+.hero-nav { display: flex; gap: 8px; }
+
+/* ✅ FIX 3: nav buttons — always have readable border + bg in both modes */
+.nav-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.55);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1;
+  font-family: 'Outfit', sans-serif;
+  backdrop-filter: blur(8px);
+  transition: all 0.22s var(--ease-spring);
+}
+.nav-btn:hover:not(:disabled) {
+  background: var(--btn-accent, #fff);
+  color: #000;
+  border-color: transparent;
+  transform: scale(1.12);
+  box-shadow: 0 0 22px var(--btn-glow, rgba(255,255,255,0.3));
+}
+.nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ── Body layout ──────────────────────────────────────────── */
+.body-section { display: grid; grid-template-columns: 1fr auto 250px; }
+.col-divider  { width: 1px; background: var(--border); margin: 18px 0; }
+
+/* ── Calendar grid column ─────────────────────────────────── */
+.cal-col { padding: 22px 18px 26px 26px; }
+
+.week-header { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 8px; gap: 3px; }
+.wh-cell {
+  font-family: 'JetBrains Mono',monospace; font-size: 9px; letter-spacing: 0.14em;
+  text-align: center; padding: 4px 0; color: var(--text3); text-transform: uppercase;
+}
+.wh-cell.wknd { color: var(--ACCENT); opacity: 0.75; }
+
+.grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+.grid-animate-left  { animation: gInL 0.3s var(--ease-out); }
+.grid-animate-right { animation: gInR 0.3s var(--ease-out); }
+@keyframes gInL { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+@keyframes gInR { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
+
+/* ── Date cells ───────────────────────────────────────────── */
+.dcell {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 9px; cursor: pointer;
+  position: relative; overflow: hidden;
+  font-size: 12.5px; font-weight: 400;
+  color: var(--text2);
+  transition: all 0.16s var(--ease-spring), color 0.4s ease, background 0.16s ease;
+  user-select: none; -webkit-user-select: none;
+}
+.dcell-empty { cursor: default; pointer-events: none; }
+.dcell:not(.dcell-empty):hover { background: var(--bg-hover); color: var(--text); transform: scale(1.1); }
+
+.dcell.wknd  { color: var(--ACCENT); opacity: 0.88; }
+
+.dcell.today {
+  border: 1.5px solid var(--ACCENT);
+  color: var(--ACCENT); font-weight: 600;
+}
+.dcell.today::after {
+  content: ''; position: absolute; bottom: 4px; left: 50%;
+  transform: translateX(-50%); width: 4px; height: 4px;
+  border-radius: 50%; background: var(--ACCENT);
+}
+
+.dcell.sel-start, .dcell.sel-end {
+  background: var(--ca) !important;
+  color: #000 !important;
+  font-weight: 700; border-radius: 11px;
+  transform: scale(1.14);
+  box-shadow: 0 0 24px var(--cg), 0 4px 14px rgba(0,0,0,0.3);
+  z-index: 3;
+  animation: popIn 0.22s var(--ease-spring);
+}
+@keyframes popIn { from{transform:scale(0.75)} to{transform:scale(1.14)} }
+
+.dcell.sel-between {
+  background: var(--cad);
+  color: var(--text);
+  border-radius: 4px;
+  animation: fillIn 0.16s ease;
+}
+@keyframes fillIn { from{opacity:0;background:transparent} }
+
+/* ✅ FIX 2: Note dot indicator on cells */
+.note-dot {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  pointer-events: none; z-index: 5;
+}
+/* don't show dot when cell is selected (it'd clash) */
+.dcell.sel-start .note-dot, .dcell.sel-end .note-dot { display: none; }
+
+/* Ripple */
+.ripple-el {
+  position: absolute; border-radius: 50%;
+  pointer-events: none; transform: scale(0);
+  animation: ripOut 0.5s ease-out forwards;
+}
+@keyframes ripOut { to{transform:scale(2.5);opacity:0} }
+
+/* Range pill */
+.range-pill {
+  margin-top: 14px;
+  padding: 9px 14px; border-radius: 40px;
+  background: var(--cad); border: 1px solid var(--cab);
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text);
+  animation: pillIn 0.28s var(--ease-spring);
+}
+@keyframes pillIn { from{opacity:0;transform:translateY(7px) scale(0.96)} }
+.range-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Notes column ─────────────────────────────────────────── */
+.notes-col {
+  padding: 20px 20px 22px 16px;
+  display: flex; flex-direction: column; gap: 11px;
+  overflow: hidden;
+}
+
+.notes-header { display: flex; align-items: center; gap: 9px; }
+.notes-icon-box {
+  width: 30px; height: 30px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+  transition: background 0.4s ease;
+}
+.notes-title { font-family: 'Cormorant Garamond',serif; font-size: 16px; font-weight: 700; color: var(--text); transition: color 0.4s ease; }
+.notes-sub   { font-size: 9.5px; font-family: 'JetBrains Mono',monospace; color: var(--text3); letter-spacing: 0.1em; }
+
+/* Tabs */
+.tab-row {
+  display: flex; gap: 3px;
+  background: var(--bg-panel); border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 3px;
+}
+.tab-btn {
+  flex: 1; padding: 6px 4px; border: none; background: transparent;
+  border-radius: 7px; font-family: 'Outfit',sans-serif;
+  font-size: 11px; font-weight: 500; color: var(--text3);
+  cursor: pointer; transition: all 0.2s var(--ease-out);
+}
+.tab-btn:not(.active):hover { color: var(--text); background: var(--bg-hover); }
+.tab-btn:disabled { opacity: 0.28; cursor: not-allowed; }
+/* active style is set inline with accent color */
+
+/* Textarea */
+.notes-wrap { position: relative; }
+.notes-ta {
+  width: 100%; height: 90px;
+  background: var(--inp-bg); border: 0.5px solid var(--inp-bd);
+  border-radius: 12px; padding: 10px 12px 22px;
+  color: var(--text);
+  font-family: 'Outfit',sans-serif; font-size: 12px; line-height: 1.6;
+  resize: none; outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.4s ease, color 0.4s ease;
+}
+.notes-ta::placeholder { color: var(--text3); }
+.notes-ta:focus {
+  border-color: var(--ca);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ca) 18%, transparent);
+}
+.notes-cc {
+  position: absolute; bottom: 7px; right: 10px;
+  font-family: 'JetBrains Mono',monospace; font-size: 9px; color: var(--text3);
+  pointer-events: none;
+}
+
+/* ✅ FIX 3: Save button — always solid accent, black text, visible in both modes */
+.save-btn {
+  width: 100%; padding: 9px 0; border-radius: 11px;
+  font-family: 'Outfit',sans-serif; font-weight: 700; font-size: 12.5px;
+  cursor: pointer; letter-spacing: 0.03em;
+  transition: all 0.22s var(--ease-spring);
+  /* color and background set inline */
+}
+.save-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 8px 24px color-mix(in srgb, var(--ACCENT) 40%, transparent); }
+.save-btn.did-save { animation: savePop 0.38s var(--ease-spring); }
+@keyframes savePop { 0%{transform:scale(0.96)} 60%{transform:scale(1.05)} 100%{transform:scale(1)} }
+
+/* ✅ FIX 2: Saved section — shows all notes always */
+.saved-section {
+  flex: 1; display: flex; flex-direction: column; gap: 7px;
+  overflow-y: auto; min-height: 0;
+}
+.saved-section::-webkit-scrollbar { width: 2px; }
+.saved-section::-webkit-scrollbar-thumb { background: var(--ACCENT); border-radius: 2px; }
+
+.saved-section-header {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono',monospace;
+  font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 2px;
+  /* color set inline with accent */
+}
+
+.saved-note {
+  background: var(--saved-bg);
+  border-radius: 9px; padding: 8px 10px;
+  border-left: 2px solid transparent;
+  animation: noteSlide 0.28s var(--ease-out);
+  transition: background 0.3s ease;
+}
+.saved-note:hover { background: var(--bg-hover); }
+@keyframes noteSlide { from{opacity:0;transform:translateY(5px)} }
+
+.saved-note-label {
+  display: flex; align-items: center; gap: 5px;
+  font-family: 'JetBrains Mono',monospace;
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.saved-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.saved-note-text {
+  font-size: 11.5px; color: var(--text2); line-height: 1.55;
+  word-break: break-word;
+}
+
+.empty-notes {
+  font-size: 11px; color: var(--text3);
+  text-align: center; padding: 16px 0; font-style: italic;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 620px) {
+  .body-section { grid-template-columns: 1fr; }
+  .col-divider { width: auto; height: 1px; margin: 0 20px; }
+  .hero { height: 200px; }
+  .month-name { font-size: 2rem; }
+  .rings-bar { gap: 14px; }
+  .ring { width: 18px; height: 18px; }
+  .ring-hole { width: 7px; height: 7px; }
+  .notes-col { padding: 18px; }
+}
